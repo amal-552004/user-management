@@ -12,7 +12,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'root', 
+    password: 'root',
     database: 'user_management'
 });
 
@@ -24,7 +24,12 @@ db.connect((err) => {
     }
 });
 
-// Routes pour gérer les utilisateurs
+// Route de test pour vérifier si le serveur fonctionne
+app.get('/', (req, res) => {
+    res.send('API User Management fonctionne 🎉');
+});
+
+// Obtenir tous les utilisateurs
 app.get('/users', (req, res) => {
     db.query('SELECT * FROM users', (err, results) => {
         if (err) {
@@ -33,16 +38,6 @@ app.get('/users', (req, res) => {
             res.status(200).json(results);
         }
     });
-});
-
-// Route par défaut pour vérifier que le serveur fonctionne
-app.get('/', (req, res) => {
-    res.send('API User Management fonctionne 🎉');
-  });
-  
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
 });
 
 // Ajouter un utilisateur
@@ -60,7 +55,6 @@ app.post('/users', (req, res) => {
     });
 });
 
-
 // Modifier un utilisateur
 app.put('/users/:id', (req, res) => {
     const { name, email, password } = req.body;
@@ -77,7 +71,6 @@ app.put('/users/:id', (req, res) => {
     });
 });
 
-
 // Supprimer un utilisateur
 app.delete('/users/:id', (req, res) => {
     const { id } = req.params;
@@ -93,11 +86,12 @@ app.delete('/users/:id', (req, res) => {
     });
 });
 
+// Lancer le serveur uniquement si ce fichier est exécuté directement
 if (require.main === module) {
     app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+        console.log(`Server is running on port ${port}`);
     });
-  }
-  
-  module.exports = app;
-  
+}
+
+// Exporter l'app pour les tests
+module.exports = app;

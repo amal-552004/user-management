@@ -1,5 +1,13 @@
 # User Management - Fullstack Application
 
+## Présentation
+
+Ce projet est une application web fullstack permettant la gestion des utilisateurs (ajout, modification, suppression et affichage). Il a été développé dans le cadre d’un projet pédagogique visant à mettre en pratique les concepts de développement web, d’intégration continue (CI/CD), de conteneurisation avec Docker, et de tests automatisés.
+
+L’objectif principal est de créer une solution complète, maintenable et déployable, en combinant les technologies modernes telles que Node.js, Express, MySQL, React.js et Docker. Le projet est conçu pour être facilement déployé en production avec une infrastructure évolutive et automatisée.
+
+---
+
 A complete fullstack user management system using:
 - **Backend**: Node.js, Express, MySQL
 - **Frontend**: React

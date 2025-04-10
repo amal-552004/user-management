@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 
-describe('Sample Test', () => {
-  it('should return true', () => {
+describe('Test Unitaire Exemple', () => {
+  it('doit retourner true', () => {
     expect(true).to.be.true;
   });
 });

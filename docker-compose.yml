@@ -1,41 +1,45 @@
 version: '3.8'
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql-container
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: user_management
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - app-network
-
+  # Backend service (Node.js API)
   backend:
-    build: ./backend
-    container_name: backend-container
-    restart: always
-    env_file:
-      - ./backend/.env
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "5000:5000"
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=user_management
     depends_on:
       - mysql
     networks:
       - app-network
+    volumes:
+      - ./backend:/app
 
-  frontend:
-    build: ./frontend
-    container_name: frontend-container
-    restart: always
+  # MySQL service
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_management
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
+      - "3306:3306"
+
+  # Frontend service (React app) [Optional]
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "80:80"
     networks:
       - app-network
 
@@ -44,3 +48,4 @@ volumes:
 
 networks:
   app-network:
+    driver: bridge

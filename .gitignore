@@ -1,0 +1,15 @@
+# Node modules (if used in root/backend)
+node_modules/
+.env
+.env.*
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+.vscode/
+
+# Docker
+*.local
+docker-compose.override.yml

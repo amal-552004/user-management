@@ -12,7 +12,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'password', // Change cela selon ta configuration
+    password: 'root', 
     database: 'user_management'
 });
 
@@ -71,6 +71,7 @@ app.put('/users/:id', (req, res) => {
     });
 });
 
+
 // Supprimer un utilisateur
 app.delete('/users/:id', (req, res) => {
     const { id } = req.params;
@@ -85,3 +86,4 @@ app.delete('/users/:id', (req, res) => {
         }
     });
 });
+

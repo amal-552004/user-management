@@ -35,6 +35,12 @@ app.get('/users', (req, res) => {
     });
 });
 
+// Route par défaut pour vérifier que le serveur fonctionne
+app.get('/', (req, res) => {
+    res.send('API User Management fonctionne 🎉');
+  });
+  
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
@@ -87,3 +93,11 @@ app.delete('/users/:id', (req, res) => {
     });
 });
 
+if (require.main === module) {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  }
+  
+  module.exports = app;
+  

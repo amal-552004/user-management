@@ -1,22 +1,48 @@
-version: '3'
-services:
-  app:
-    build:
-      context: ./backend   # Chemin vers ton dossier backend
-    ports:
-      - "5000:5000"  # Exposer le port 5000 pour le backend
-    depends_on:
-      - db
-    environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - DB_NAME=userdb
+version: '3.8'
 
-  db:
+services:
+  mysql:
     image: mysql:8
+    container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: userdb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_management_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    container_name: backend-container
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: user_management_db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend-container
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:

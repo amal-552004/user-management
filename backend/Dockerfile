@@ -1,20 +1,21 @@
-# Utilise l'image officielle Node.js
-FROM node:18
+# -------- Etape 1 : Build --------
+    FROM node:20-alpine AS build
 
-# Dossier de travail dans le conteneur
-WORKDIR /app
-
-# Copie les fichiers package.json et package-lock.json
-COPY package*.json ./
-
-# Installation des dépendances
-RUN npm install
-
-# Copie tout le reste
-COPY . .
-
-# Expose le port 5000
-EXPOSE 5000
-
-# Commande de démarrage
-CMD ["npm", "start"]
+    WORKDIR /app
+    
+    COPY package*.json ./
+    RUN npm install --production
+    
+    COPY . .
+    
+    # -------- Etape 2 : Run --------
+    FROM node:20-alpine
+    
+    WORKDIR /app
+    
+    COPY --from=build /app /app
+    
+    EXPOSE 5000
+    
+    CMD ["node", "server.js"]
+    
